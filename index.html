@@ -3,65 +3,147 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Recipe Finder</title>
 
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
+    <!-- Navigation Bar -->
     <header>
+        <nav class="navbar">
 
-    <nav class="navbar">
+            <div class="logo">
+                🍴 Recipe Finder
+            </div>
 
-        <div class="logo">
-            🍴 Recipe Finder
+            <ul class="nav-links">
+
+                <li>
+                    <a href="#" id="homeBtn">Home</a>
+                </li>
+
+                <li>
+                    <a href="#" id="favoritesBtn">
+                        ❤️ Favorites
+                    </a>
+                </li>
+
+                <li>
+                    <a href="#" id="randomBtn">
+                        🎲 Random Recipe
+                    </a>
+                </li>
+
+                <li>
+                    <a href="#" id="aboutBtn">
+                        About
+                    </a>
+                </li>
+
+            </ul>
+
+            <button class="theme-btn" id="themeBtn">
+                🌙
+            </button>
+
+        </nav>
+    </header>
+
+
+    <!-- Hero Section -->
+    <section class="hero">
+
+        <h1>Discover Delicious Recipes 🍴</h1>
+
+        <p>
+            Search for your favorite recipes from around the world.
+        </p>
+
+    </section>
+
+
+    <!-- Search Section -->
+    <section class="search-section">
+
+        <div class="search-box">
+
+            <input
+                type="text"
+                id="searchInput"
+                placeholder="Search food like Chicken, Biryani, Pasta..."
+            >
+
+            <button id="searchBtn">
+                🔍 Search
+            </button>
+
         </div>
 
-        <ul class="nav-links">
+    </section>
 
-            <li><a href="#">Home</a></li>
 
-            <li><a href="#" id="favoritesBtn">
-                Favorites
-            </a></li>
+    <!-- Categories -->
+    <section class="categories">
 
-            <li><a href="#" id="randomBtn">
-                Random Recipe
-            </a></li>
+        <h2>Popular Categories</h2>
 
-            <li><a href="#">
-                About
-            </a></li>
+        <div class="category-buttons">
 
-        </ul>
+            <button data-category="Chicken">🍗 Chicken</button>
 
-        <button class="theme-btn">
+            <button data-category="Beef">🥩 Beef</button>
 
-            🌙
+            <button data-category="Seafood">🐟 Seafood</button>
 
-        </button>
+            <button data-category="Vegetarian">🥗 Vegetarian</button>
 
-    </nav>
+            <button data-category="Dessert">🍰 Dessert</button>
 
-</header>
+            <button data-category="Pasta">🍝 Pasta</button>
 
-    <div class="search-box">
+        </div>
 
-        <input
-            type="text"
-            id="searchInput"
-            placeholder="Search food like Chicken, Biryani, Pasta..."
-        >
+    </section>
 
-        <button id="searchBtn">
-            Search
-        </button>
 
-    </div>
+    <!-- Recipe Section -->
+    <main>
 
-    <div id="recipes">
+        <div id="recipes"></div>
 
-    </div>
+    </main>
+
+
+    <!-- About Section -->
+    <section class="about" id="aboutSection">
+
+        <h2>About Recipe Finder</h2>
+
+        <p>
+            Recipe Finder helps you discover delicious recipes
+            from around the world. Search for recipes, explore
+            different categories and find something new to cook.
+        </p>
+
+        <p>
+            Built using HTML, CSS, JavaScript and TheMealDB API.
+        </p>
+
+    </section>
+
+
+    <!-- Footer -->
+    <footer>
+
+        <p>
+            © 2026 Recipe Finder | Built with ❤️
+        </p>
+
+    </footer>
+
 
     <script src="script.js"></script>
 
