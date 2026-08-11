@@ -8,7 +8,6 @@ const themeBtn = document.getElementById("themeBtn");
 const aboutBtn = document.getElementById("aboutBtn");
 const homeBtn = document.getElementById("homeBtn");
 
-
 // ================= FAVORITES =================
 
 let favorites = JSON.parse(localStorage.getItem("favorites")) || [];
@@ -169,6 +168,8 @@ categoryButtons.forEach(button => {
 });
 
 
+// ================= FETCH CATEGORY =================
+
 async function fetchCategory(category) {
 
     recipes.innerHTML =
@@ -177,8 +178,12 @@ async function fetchCategory(category) {
     try {
 
         const response = await fetch(
-            `https://www.themealdb.com/api/json/v1/1/filter.php?c=${category}`
+            `https://www.themealdb.com/api/json/v1/1/filter.php?c=${encodeURIComponent(category)}`
         );
+
+        if (!response.ok) {
+            throw new Error("Category request failed");
+        }
 
         const data = await response.json();
 
@@ -234,11 +239,144 @@ function displayCategoryRecipes(meals) {
                         ${isFavorite ? "❤️ Favorited" : "🤍 Add to Favorites"}
                     </button>
 
+                    <a
+                        href="#"
+                        onclick="getRecipeDetails('${meal.idMeal}'); return false;"
+                    >
+                        View Recipe
+                    </a>
+
                 </div>
 
             </div>
 
         `;
+    });
+}
+
+
+// ================= RECIPE DETAILS =================
+
+async function getRecipeDetails(mealId) {
+
+    try {
+
+        const response = await fetch(
+            `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${mealId}`
+        );
+
+        const data = await response.json();
+
+        if (!data.meals) {
+            return;
+        }
+
+        const meal = data.meals[0];
+
+        displayRecipeDetails(meal);
+
+    } catch (error) {
+
+        console.error(error);
+
+        recipes.innerHTML =
+            "<h2 class='message'>Unable to load recipe details.</h2>";
+    }
+}
+
+
+// ================= DISPLAY RECIPE DETAILS =================
+
+function displayRecipeDetails(meal) {
+
+    const ingredients = [];
+
+    for (let i = 1; i <= 20; i++) {
+
+        const ingredient = meal[`strIngredient${i}`];
+        const measure = meal[`strMeasure${i}`];
+
+        if (ingredient && ingredient.trim() !== "") {
+
+            ingredients.push(
+                `<li>${measure || ""} ${ingredient}</li>`
+            );
+        }
+    }
+
+    const isFavorite = favorites.some(
+        favorite => favorite.idMeal === meal.idMeal
+    );
+
+    recipes.innerHTML = `
+
+        <div class="card recipe-details">
+
+            <img
+                src="${meal.strMealThumb}"
+                alt="${meal.strMeal}"
+            >
+
+            <div class="card-content">
+
+                <h2>${meal.strMeal}</h2>
+
+                <p>
+                    <strong>Category:</strong>
+                    ${meal.strCategory || "Not available"}
+                </p>
+
+                <p>
+                    <strong>Cuisine:</strong>
+                    ${meal.strArea || "Not available"}
+                </p>
+
+                <h3>Ingredients</h3>
+
+                <ul>
+                    ${ingredients.join("")}
+                </ul>
+
+                <h3>Instructions</h3>
+
+                <p>
+                    ${meal.strInstructions || "Instructions not available."}
+                </p>
+
+                <button
+                    class="favorite-btn ${isFavorite ? "favorited" : ""}"
+                    onclick="toggleFavorite('${meal.idMeal}')"
+                >
+                    ${
+                        isFavorite
+                        ? "❤️ Favorited"
+                        : "🤍 Add to Favorites"
+                    }
+                </button>
+
+                ${
+                    meal.strYoutube
+                    ? `
+                    <a
+                        href="${meal.strYoutube}"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        ▶ Watch Recipe Video
+                    </a>
+                    `
+                    : ""
+                }
+
+            </div>
+
+        </div>
+
+    `;
+
+    window.scrollTo({
+        top: recipes.offsetTop - 100,
+        behavior: "smooth"
     });
 }
 
@@ -257,6 +395,10 @@ randomBtn.addEventListener("click", async (event) => {
         const response = await fetch(
             "https://www.themealdb.com/api/json/v1/1/random.php"
         );
+
+        if (!response.ok) {
+            throw new Error("Random recipe request failed");
+        }
 
         const data = await response.json();
 
@@ -287,7 +429,15 @@ async function toggleFavorite(mealId) {
             `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${mealId}`
         );
 
+        if (!response.ok) {
+            throw new Error("Favorite request failed");
+        }
+
         const data = await response.json();
+
+        if (!data.meals) {
+            return;
+        }
 
         const meal = data.meals[0];
 
@@ -299,14 +449,17 @@ async function toggleFavorite(mealId) {
 
             favorites.splice(existingIndex, 1);
 
-            alert(`${meal.strMeal} removed from favorites 💔`);
+            alert(
+                `${meal.strMeal} removed from favorites 💔`
+            );
 
         } else {
 
             favorites.push(meal);
 
-            alert(`${meal.strMeal} added to favorites ❤️`);
-
+            alert(
+                `${meal.strMeal} added to favorites ❤️`
+            );
         }
 
         localStorage.setItem(
