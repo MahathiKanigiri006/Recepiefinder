@@ -257,6 +257,9 @@ body {
     color: #555;
 }
 
+
+/* ================= RECIPE LINKS ================= */
+
 .card-content a {
     display: inline-block;
 
@@ -279,6 +282,50 @@ body {
 }
 
 
+/* ================= FAVORITE BUTTON ================= */
+
+.favorite-btn {
+    display: block;
+
+    width: 100%;
+
+    margin-top: 12px;
+
+    padding: 11px 15px;
+
+    border: 2px solid #ff6b35;
+
+    background: white;
+
+    color: #ff6b35;
+
+    border-radius: 7px;
+
+    cursor: pointer;
+
+    font-size: 15px;
+    font-weight: bold;
+
+    transition: 0.3s;
+}
+
+.favorite-btn:hover {
+    background: #fff0eb;
+
+    transform: translateY(-2px);
+}
+
+.favorite-btn.favorited {
+    background: #ff6b35;
+
+    color: white;
+}
+
+.favorite-btn.favorited:hover {
+    background: #e85a28;
+}
+
+
 /* ================= MESSAGES ================= */
 
 .message {
@@ -289,6 +336,14 @@ body {
     color: #555;
 
     margin-top: 30px;
+}
+
+.message p {
+    margin-top: 10px;
+
+    font-size: 16px;
+
+    color: #777;
 }
 
 
@@ -373,4 +428,11 @@ footer {
     .search-box button {
         width: 100%;
     }
+
+    #recipes {
+        width: 92%;
+
+        grid-template-columns: 1fr;
+    }
+
 }
